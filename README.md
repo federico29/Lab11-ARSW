@@ -43,61 +43,43 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 
 * ¿Qué es un Azure Function?
 
-	Azure Functions es un servicio en la nube que proporciona toda la infraestructura y recursos que se actualizan continuamente y que se necesitan para ejecutar todo tipo de aplicaciones.
-	Permite que el usuario se concentre más en los fragmentos de código que más le importan y Functions se encarga del resto. Functions proporciona procesamiento sin servidor para Azure. Sirve para 
-	responder a cambios en la base de datos, procesar transmisiones de IoT, administrar colas de mensajes, etc.
+Azure Functions es un servicio en la nube que proporciona toda la infraestructura y recursos que se actualizan continuamente y que se necesitan para ejecutar todo tipo de aplicaciones. Permite que el usuario se concentre más en los fragmentos de código que más le importan y Functions se encarga del resto. Functions proporciona procesamiento sin servidor para Azure. Sirve para responder a cambios en la base de datos, procesar transmisiones de IoT, administrar colas de mensajes, etc.
 
 * ¿Qué es serverless?
 
-	Serverless o "Sin servidor", es un modelo de ejecución en el que el proveedor en la nube (AWS, Azure o Google Cloud) es responsable de ejecutar un fragmento de código 
-	mediante la asignación dinámica de los recursos. Y cobrando solo por la cantidad de recursos utilizados para ejecutar el código. El código, generalmente, se ejecuta dentro de contenedores sin 
-	estado que pueden ser activados por una variedad de eventos que incluyen solicitudes HTTP, eventos de base de datos, servicios de colas, alertas de monitoreo, carga de archivos, eventos programados, 
-	etc. El código que se envía a el proveedor en la nube para la ejecución es generalmente en forma de una función. Por lo tanto, serverless a veces se denomina “Funciones como servicio” o “FaaS”. 
+Serverless o "Sin servidor", es un modelo de ejecución en el que el proveedor en la nube (AWS, Azure o Google Cloud) es responsable de ejecutar un fragmento de código mediante la asignación dinámica de los recursos. Y cobrando solo por la cantidad de recursos utilizados para ejecutar el código. El código, generalmente, se ejecuta dentro de contenedores sin estado que pueden ser activados por una variedad de eventos que incluyen solicitudes HTTP, eventos de base de datos, servicios de colas, alertas de monitoreo, carga de archivos, eventos programados, etc. El código que se envía a el proveedor en la nube para la ejecución es generalmente en forma de una función. Por lo tanto, serverless a veces se denomina “Funciones como servicio” o “FaaS”. 
 
 * ¿Qué es el runtime y que implica seleccionarlo al momento de crear el Function App?
 
-	El runtime es el intervalo de tiempo de ejecución en el cual un programa se ejecuta. En azure esta relacionado con la versión de .NET, Nodejs (desde la versión 3), Python o Java en la que se basa el 
-	tiempo de ejecuión. En este caso utilizamos el plan Consumption y la versión de runtime 12, lo cual implica que el tiempo de timeout será de 5 minutos y además nuestra memoria se limpiará en este 
-	intervalo de tiempo.
+El runtime es el intervalo de tiempo de ejecución en el cual un programa se ejecuta. En azure esta relacionado con la versión de .NET, Nodejs (desde la versión 3), Python o Java en la que se basa el tiempo de ejecuión. En este caso utilizamos el plan Consumption y la versión de runtime 12, lo cual implica que el tiempo de timeout será de 5 minutos y además nuestra memoria se limpiará en este intervalo de tiempo.
 
 * ¿Por qué es necesario crear un Storage Account de la mano de un Function App?
 
-	Debido a que Azure Functions se basa en Azure Storage para operaciones de almacenamiento y administración como son Manejo de triggers y logs. Azure Storage account nos proporciona un espacio de nombres 
-	unico para el almacenamiento.
+Debido a que Azure Functions se basa en Azure Storage para operaciones de almacenamiento y administración como son Manejo de triggers y logs. Azure Storage account nos proporciona un espacio de nombres unico para el almacenamiento.
 
 * ¿Cuáles son los tipos de planes para un Function App?, ¿En qué se diferencian?, mencione ventajas y desventajas de cada uno de ellos.
 
-- Plan de consumo: Cuando se usa el plan de consumo, las instancias del host de Azure Functions se agregan y quitan de forma dinámica según el número de eventos entrantes. Este plan sin servidor se 
-escala automáticamente y solo se le cobra por los recursos de proceso cuando se ejecutan las funciones. En un plan de consumo, se agota el tiempo de espera de una ejecución de función tras un período 
-de tiempo configurable. Ventajas:
+**Plan de consumo:** Cuando se usa el plan de consumo, las instancias del host de Azure Functions se agregan y quitan de forma dinámica según el número de eventos entrantes. Este plan sin servidor se escala automáticamente y solo se le cobra por los recursos de proceso cuando se ejecutan las funciones. En un plan de consumo, se agota el tiempo de espera de una ejecución de función tras un período de tiempo configurable. Ventajas:
+1. Solo se paga por los recursos utilizados.
+2. Escala horizontalmente de manera automatica, incluso durante periodos de gran carga.
 
-	1. Solo se paga por los recursos utilizados.
-	2. Escala horizontalmente de manera automatica, incluso durante periodos de gran carga.
+**Plan premium:** Cuando se usa el plan Prémium, las instancias del host de Azure Functions se agregan y quitan según el número de eventos entrantes al igual que con el plan de consumo. Ventajas:
+1. Instancias permanentemente semiactivas para evitar cualquier inicio en frío
+2. Conectividad de red virtual
+3. Duración de la ejecución ilimitada (60 minutos garantizados)
+4. Tamaños de la instancia Prémium (un núcleo, dos núcleos y cuatro instancias de núcleo)
+5. Precios más previsibles
+6. Asignación de aplicaciones de alta densidad para planes con varias aplicaciones de funciones
 
-- Plan premium: Cuando se usa el plan Prémium, las instancias del host de Azure Functions se agregan y quitan según el número de eventos entrantes al igual que con el plan de consumo. Ventajas:
+**Plan de servicio de aplicaciones:** Las aplicaciones de funciones también pueden ejecutarse en las mismas máquinas virtuales dedicadas que otras aplicaciones de App Service (SKU básica, estándar, prémium y aislada), con este plan, para escalar horizontalmente de forma manual, se puede agregar más instancias de máquina virtual. También puede habilitar el escalado automático, aunque este sea más lento que la escala elástica del plan Premium. Ventajas:
+1. Tiene máquinas virtuales infrautilizadas que ya ejecutan otras instancias de App Service.
+2. Quiere proporcionar una imagen personalizada en la que ejecutar sus funciones.
 
-	1. Instancias permanentemente semiactivas para evitar cualquier inicio en frío
-	2. Conectividad de red virtual
-	3. Duración de la ejecución ilimitada (60 minutos garantizados)
-	4. Tamaños de la instancia Prémium (un núcleo, dos núcleos y cuatro instancias de núcleo)
-	5. Precios más previsibles
-	6. Asignación de aplicaciones de alta densidad para planes con varias aplicaciones de funciones
-
-- Plan de servicio de aplicaciones: Las aplicaciones de funciones también pueden ejecutarse en las mismas máquinas virtuales dedicadas que otras aplicaciones de App Service (SKU básica, estándar, 
-prémium y aislada), con este plan, para escalar horizontalmente de forma manual, se puede agregar más instancias de máquina virtual. También puede habilitar el escalado automático, aunque este sea más 
-lento que la escala elástica del plan Premium. Ventajas:
-
-	1. Tiene máquinas virtuales infrautilizadas que ya ejecutan otras instancias de App Service.
-	2. Quiere proporcionar una imagen personalizada en la que ejecutar sus funciones.
-
-- Diferencias: La diferencia entre cada uno de estos planes es que el plan de consumo varía la cantidad de recursos ofrecidos según la necesidad del usuario, mientras que el plan premium permite 
-un mayor desempeño para las funciones y mayores capacidades de procesamiento. Y finalmente el plan de servicio de aplicaciones proporciona herramientas para aquellos que necesitan hacer calculos con 
-una mayor carga.
+**Diferencias:** La diferencia entre cada uno de estos planes es que el plan de consumo varía la cantidad de recursos ofrecidos según la necesidad del usuario, mientras que el plan premium permite un mayor desempeño para las funciones y mayores capacidades de procesamiento. Y finalmente el plan de servicio de aplicaciones proporciona herramientas para aquellos que necesitan hacer calculos con una mayor carga.
 
 * ¿Por qué la memoization falla o no funciona de forma correcta?
 
 * ¿Cómo funciona el sistema de facturación de las Function App?
 
-Para todos los tipos se mira según el numero de ejecuciones realizadas por mes, además hay otros factores que influyen en la facturación dependiendo del plan, por ejemplo el consumo de recursos en donde 
-se factura según el uso de estos, la duración de uso de VCPU y la duración de uso de la memoria.
+Para todos los tipos se mira según el numero de ejecuciones realizadas por mes, además hay otros factores que influyen en la facturación dependiendo del plan, por ejemplo el consumo de recursos en donde se factura según el uso de estos, la duración de uso de VCPU y la duración de uso de la memoria.
 
